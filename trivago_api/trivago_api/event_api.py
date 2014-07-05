@@ -58,7 +58,7 @@ def eventful_events(query, begin, end):
     logger.info("query to eventful api: %s %s" % (query, date_range))
     try:
         result = eventful_api_client.call('/events/search',
-            location=query, date=date_range)
+            location=query, date=date_range, page_size=25)
     except Exception, err:
         logger.error("eventful api exception: %s" % pformat(err))
     if result is not None:
@@ -68,4 +68,5 @@ def eventful_events(query, begin, end):
             for item in eventful_events:
                 events.append(eventful_to_trivago(item))
                 #events.append(item)
+    logger.info("got %s events" % len(events))
     return events
