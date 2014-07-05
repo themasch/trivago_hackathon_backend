@@ -46,6 +46,7 @@ EVENTFUL_MAPPING = {
 }
 
 def eventful_to_trivago(item):
+    logger.info("item: %s" % pformat(item))
     event = remap(item, EVENTFUL_MAPPING)
     if item.get("image") is not None:
         event["image_small"] = item.get("image", {}).get("thumb", {}).get("url")
@@ -68,13 +69,15 @@ def eventful_events(query, location, begin, end):
     result = None
     try:
         result = eventful_api_client.call('/events/search', **payload)
-#            location=location, keywords=query, date=date_range, page_size=25)
     except Exception, err:
         logger.error("eventful api exception: %s" % pformat(err))
     if result is not None:
         event_dict = result.get("events", {})
         if event_dict is not None:
             eventful_events = event_dict.get("event", [])
+            if isinstance(eventful_events, dict):
+                # aaaaarrgghh
+                eventful_events = [eventful_events]
             for item in eventful_events:
                 events.append(eventful_to_trivago(item))
                 #events.append(item)

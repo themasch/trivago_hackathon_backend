@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 # Imports from core django
 
 # Imports from third party apps
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -16,6 +17,7 @@ from rest_framework.reverse import reverse
 # Local imports
 from .serializers import EventSerializer
 from .serializers import SearchSerializer
+from .serializers import EventIdSerializer
 from .util import date_from_str
 from . import event_api
 
@@ -28,6 +30,7 @@ def api_root(request, format=None):
     """
     public = {
         'events': reverse('events', request=request, format=format),
+        'blockEvent': reverse('block-event', request=request, format=format),
     }
     links = public
     return Response(links)
@@ -52,6 +55,13 @@ class EventList(APIView):
             elif name in ("query", "location"):
                 params[name] = val
         return params
+    
+    def filter_excluded(self, events, excluded_ids):
+        filtered_events = []
+        for event in events:
+            if event["id"] not in excluded_ids:
+                filtered_events.append(event)
+        return filtered_events
 
     def get(self, request, format=None):
         data = self.get_defaults()
@@ -63,6 +73,23 @@ class EventList(APIView):
         events = []
         if serializer.is_valid():
             events = event_api.eventful_events(query, location, begin, end)
+            excluded_ids = request.session.get("excluded_ids", {})
+            events = self.filter_excluded(events, excluded_ids)
+            return Response(events)
         else:
             logger.info("serializer error: %s" % serializer.errors)
-        return Response(events)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BlockEvent(APIView):
+    """ Exclude Event with ID from listing
+    """
+    def post(self, request, format=None):
+        serializer = EventIdSerializer(data=request.DATA)
+        if serializer.is_valid():
+            excluded_ids = request.session.get("excluded_ids", {})
+            excluded_ids[serializer.data["event_id"]] = True
+            request.session["excluded_ids"] = excluded_ids
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            logger.info("serializer error: %s" % serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
