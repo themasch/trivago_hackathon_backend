@@ -52,14 +52,23 @@ def eventful_to_trivago(item):
         event["image"] = item.get("image", {}).get("medium", {}).get("url")
     return event
         
-def eventful_events(query, begin, end):
+def eventful_events(query, location, begin, end):
     events = []
     query = strip_accents(query)
+    location = strip_accents(location)
     date_range = dates_to_eventful_range(begin, end)
-    logger.info("query to eventful api: %s %s" % (query, date_range))
+    payload = {
+        "location": location,
+        "date": date_range,
+        "page_size": 25,
+    }
+    if query is not None and query != "None":
+        payload["keywords"] = query
+    logger.info("query to eventful api: %s" % pformat(payload))
+    result = None
     try:
-        result = eventful_api_client.call('/events/search',
-            location=query, date=date_range, page_size=25)
+        result = eventful_api_client.call('/events/search', **payload)
+#            location=location, keywords=query, date=date_range, page_size=25)
     except Exception, err:
         logger.error("eventful api exception: %s" % pformat(err))
     if result is not None:

@@ -35,7 +35,8 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 class SearchSerializer(serializers.Serializer):
     begin = serializers.DateField()
     end = serializers.DateField()
-    query = serializers.CharField()
+    query = serializers.CharField(required=False)
+    location = serializers.CharField()
 
     def restore_object(self, attrs, instance=None):
         if instance is not None:
@@ -43,6 +44,7 @@ class SearchSerializer(serializers.Serializer):
             instance.begin = attrs.get('begin', instance.begin)
             instance.end = attrs.get('end', instance.end)
             instance.query = attrs.get('query', instance.query)
+            instance.location = attrs.get('location', instance.location)
             return instance
 
         instance = TrivagoData(attrs)

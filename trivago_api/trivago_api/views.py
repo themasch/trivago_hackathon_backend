@@ -49,7 +49,7 @@ class EventList(APIView):
         for name, val in query_params.iteritems():
             if name in ("begin", "end"):
                 params[name] = date_from_str(val)
-            elif name in ("query",):
+            elif name in ("query", "location"):
                 params[name] = val
         return params
 
@@ -58,9 +58,11 @@ class EventList(APIView):
         data.update(self.cleanup_params(request.QUERY_PARAMS))
         serializer = SearchSerializer(data=data)
         logger.info("search for events %s" % pformat(data))
-        query, begin, end = [data.get(k) for k in ("query", "begin", "end")]
+        query, location, begin, end = [data.get(k) for k in ("query", "location", "begin", "end")]
+        logger.info("search for events %s %s %s %s" % (query, location, begin, end))
         events = []
         if serializer.is_valid():
-            logger.info("heureka")
-            events = event_api.eventful_events(query, begin, end)
+            events = event_api.eventful_events(query, location, begin, end)
+        else:
+            logger.info("serializer error: %s" % serializer.errors)
         return Response(events)
