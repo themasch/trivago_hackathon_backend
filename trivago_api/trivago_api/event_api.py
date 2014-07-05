@@ -30,6 +30,7 @@ def dates_to_eventful_range(begin, end):
 eventful_api_client = eventful.API(settings.EVENTFUL_API_KEY)
 
 EVENTFUL_MAPPING = {
+    "id": (None, "id"),
     "title": (None, "title"),
     "description": (None, "desc"),
     "venue_name": (None, "venue"),
