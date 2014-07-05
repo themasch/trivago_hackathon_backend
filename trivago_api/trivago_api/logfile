@@ -1,0 +1,9 @@
+[05/Jul/2014 17:52:02] INFO [trivago_api.event_api:77] retrieve category list from eventful
+[05/Jul/2014 17:52:35] INFO [trivago_api.event_api:77] retrieve category list from eventful
+[05/Jul/2014 17:52:35] INFO [trivago_api.event_api:86] got 29 cats
+[05/Jul/2014 18:02:33] INFO [trivago_api.event_api:77] retrieve category list from eventful
+[05/Jul/2014 18:02:53] INFO [trivago_api.event_api:77] retrieve category list from eventful
+[05/Jul/2014 18:05:57] INFO [trivago_api.event_api:77] retrieve category list from eventful
+[05/Jul/2014 18:05:58] INFO [trivago_api.event_api:88] got 29 cats
+[05/Jul/2014 18:13:08] INFO [trivago_api.event_api:77] retrieve category list from eventful
+[05/Jul/2014 18:13:09] INFO [trivago_api.event_api:87] got 29 cats

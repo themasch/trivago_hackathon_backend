@@ -71,3 +71,19 @@ def eventful_events(query, begin, end):
                 #events.append(item)
     logger.info("got %s events" % len(events))
     return events
+
+def eventful_cats():
+    eventful_cats = {}
+    logger.info("retrieve category list from eventful");
+    try:
+	result = eventful_api_client.call('/categories/list')
+    except Exception, err:
+	logger.error("eventful api exception: %s" % pformat(err))
+    if result is not None:
+	cat_dicts = result.get("category", {})
+	if cat_dicts is not None:
+	    for cat in cat_dicts:
+		eventful_cats[cat["id"]] = cat["name"]
+    logger.info("got %s cats" % len(eventful_cats))
+    return eventful_cats
+

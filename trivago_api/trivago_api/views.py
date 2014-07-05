@@ -64,3 +64,10 @@ class EventList(APIView):
             logger.info("heureka")
             events = event_api.eventful_events(query, begin, end)
         return Response(events)
+
+class CatList(APIView):
+    """ List of categories
+    """
+    def get(self, request, format=None):
+	cats = event_api.eventful_cats()
+	return Response(cats)	
