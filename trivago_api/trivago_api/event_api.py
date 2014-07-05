@@ -10,7 +10,7 @@ from urllib import urlencode
 from django.conf import settings
 
 # Imports from third party apps
-import eventful
+from . import eventful
 
 # Local imports
 from .util import remap
@@ -27,7 +27,7 @@ def date_from_eventful_str(date_str):
 def dates_to_eventful_range(begin, end):
     return "%s-%s" % (begin.strftime("%Y%m%d00"), end.strftime("%Y%m%d00"))
 
-eventful_api_client = eventful.API(settings.EVENTFUL_API_KEY)
+eventful_api_client = eventful.API(settings.EVENTFUL_API_KEY, cache="eventful_cache")
 
 EVENTFUL_MAPPING = {
     "id": (None, "id"),
