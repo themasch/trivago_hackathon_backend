@@ -17,6 +17,7 @@ from rest_framework.reverse import reverse
 from .serializers import EventSerializer
 from .serializers import SearchSerializer
 from .util import date_from_str
+from . import event_api
 
 logger = logging.getLogger(__name__)
 
