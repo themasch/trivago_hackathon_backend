@@ -36,5 +36,6 @@ class EventList(APIView):
     """
 
     def get(self, request, format=None):
-        logger.info("serch for events %s" % pformat(request.QUERY_PARAMS))
+        logger.info("got get")
+        logger.info("search for events %s" % pformat(request.QUERY_PARAMS))
         return Response({"foobar": "baz"})

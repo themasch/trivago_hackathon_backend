@@ -15,7 +15,7 @@ logging:
       formatter: simple
       stream: ext://sys.stdout
   loggers:
-    criteo.io:
+    trivago_api.io:
       level: DEBUG
       handlers: [console]
       propagate: no
