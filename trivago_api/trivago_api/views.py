@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 from pprint import pformat
 import logging
+from datetime import datetime, timedelta
 
 # Imports from core django
 
@@ -13,7 +14,9 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 # Local imports
-from trivago_api.serializers import EventSerializer
+from .serializers import EventSerializer
+from .serializers import SearchSerializer
+from .util import date_from_str
 
 logger = logging.getLogger(__name__)
 
@@ -30,11 +33,32 @@ def api_root(request, format=None):
 
 
 class EventList(APIView):
+    """ Search for events -> list of events
     """
-    Event list
-    """
+    def get_defaults(self):
+        data = {}
+        begin = datetime.now() + timedelta(days=14)
+        end = begin + timedelta(days=3)
+        data["begin"] = begin
+        data["end"] = end
+        return data
+
+    def cleanup_params(self, query_params):
+        params = {}
+        for name, val in query_params.iteritems():
+            if name in ("begin", "end"):
+                params[name] = date_from_str(val)
+            elif name in ("query",):
+                params[name] = val
+        return params
 
     def get(self, request, format=None):
         logger.info("got get")
-        logger.info("search for events %s" % pformat(request.QUERY_PARAMS))
+
+        data = self.get_defaults()
+        data.update(self.cleanup_params(request.QUERY_PARAMS))
+        serializer = SearchSerializer(data=data)
+        logger.info("search for events %s" % pformat(data))
+        if serializer.is_valid():
+            logger.info("heureka")
         return Response({"foobar": "baz"})

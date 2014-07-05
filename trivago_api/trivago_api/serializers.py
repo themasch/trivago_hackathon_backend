@@ -2,6 +2,7 @@
 # Standard library imports
 from __future__ import absolute_import
 import logging
+from pprint import pformat
 
 # Imports from core django
 from django.forms import widgets
@@ -27,55 +28,21 @@ class TrivagoData(dict):
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
-    date_search = serializers.DateField()
-    arrival = serializers.DateField()
-    departure = serializers.DateField()
-    lat_user = serializers.FloatField()
-    lng_user = serializers.FloatField()
-    lat_search = serializers.FloatField()
-    lng_search = serializers.FloatField()
-    group_search = serializers.BooleanField()
-
     class Meta:
         model = Event
         fields = ('url', 'titel', 'desc')
 
 class SearchSerializer(serializers.Serializer):
-    date_search = serializers.DateField()
-    arrival = serializers.DateField()
-    departure = serializers.DateField()
-    lat_user = serializers.FloatField()
-    lng_user = serializers.FloatField()
-    lat_search = serializers.FloatField()
-    lng_search = serializers.FloatField()
-    group_search = serializers.BooleanField()
-    city_search = serializers.CharField()
-    city_user = serializers.CharField()
-    continent_search = serializers.CharField()
-    continent_user = serializers.CharField()
-    country_search = serializers.CharField()
-    country_user = serializers.CharField()
-    platform_search = serializers.CharField()
+    begin = serializers.DateField()
+    end = serializers.DateField()
+    query = serializers.CharField()
 
     def restore_object(self, attrs, instance=None):
-        from pprint import pformat
-        logger.info("instance: %s" % pformat(instance))
-        logger.info("attrs data: %s" % pformat(attrs))
         if instance is not None:
             instance.date_search = attrs.get('date_search', instance.date_search)
-            instance.arrival = attrs.get('arrival', instance.arrival)
-            instance.departure = attrs.get('departure', instance.departure)
-            instance.lat_user = attrs.get('lat_user', instance.lat_user)
-            instance.lng_user = attrs.get('lng_user', instance.lng_user)
-            instance.lat_search = attrs.get('lat_search', instance.lat_search)
-            instance.lng_search = attrs.get('lng_serach', instance.lng_search)
-            instance.city_search = attrs.get('city_search', instance.city_search)
-            instance.city_user = attrs.get('city_user', instance.city_user)
-            instance.continent_search = attrs.get('continent_search', instance.continent_search)
-            instance.continent_user = attrs.get('continent_user', instance.continent_user)
-            instance.country_search = attrs.get('country_search', instance.country_search)
-            instance.country_user = attrs.get('country_user', instance.country_user)
-            instance.platform_search = attrs.get('platform_search', instance.platform_search)
+            instance.begin = attrs.get('begin', instance.begin)
+            instance.end = attrs.get('end', instance.end)
+            instance.query = attrs.get('query', instance.query)
             return instance
 
         instance = TrivagoData(attrs)

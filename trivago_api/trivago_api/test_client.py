@@ -27,7 +27,8 @@ class RestUrls(object):
         self.events = urljoin(base_url, "events")
 
 def test_get_events(events_url):
-    test_query = {"arrival": "20110409000000", "longitude_user": 10.45, "latitude_user": 51.2167, "group_search": "1", "continent_search": "Europe", "city_user": "M\u00fchlhausen", "search_date": "20110330000000", "continent_user": "Europe", "departure": "20110410000000", "latitude_search": 40.416981, "city_search": "Madrid", "country_user": "Germany", "longitude_search": -3.703362, "country_search": "Spain", "id": 0, "platform_search": "DE"}
+    #test_query = {"arrival": "20110409000000", "longitude_user": 10.45, "latitude_user": 51.2167, "group_search": "1", "continent_search": "Europe", "city_user": "M\u00fchlhausen", "search_date": "20110330000000", "continent_user": "Europe", "departure": "20110410000000", "latitude_search": 40.416981, "city_search": "Madrid", "country_user": "Germany", "longitude_search": -3.703362, "country_search": "Spain", "id": 0, "platform_search": "DE"}
+    test_query = {"query": "berlin", "begin": "20141012000000", "end": "20141015000000"}
     response = requests.get(events_url, params=test_query)
     result = json.loads(response.content)
     return result
