@@ -26,7 +26,6 @@ def api_root(request, format=None):
         'events': reverse('events', request=request, format=format),
     }
     links = public
-
     return Response(links)
 
 
