@@ -2,6 +2,7 @@ paths:
   data: data
   files:
     queries: hackathon.csv
+    cache: cache
 logging:
   version: 1
   formatters:

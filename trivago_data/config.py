@@ -20,8 +20,4 @@ class Paths(object):
             path = os.path.join(base, CONFIG["paths"]["files"][name])
             setattr(self, name, path)
 
-    def has_label(self, name):
-        return "train" in name
-
 paths = Paths()
-PARTS = CONFIG["parts"]
