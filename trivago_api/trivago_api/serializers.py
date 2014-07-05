@@ -49,13 +49,13 @@ class SearchSerializer(serializers.Serializer):
     lat_search = serializers.FloatField()
     lng_search = serializers.FloatField()
     group_search = serializers.BooleanField()
-    city_search = CharField()
-    city_user = CharField()
-    continent_search = CharField()
-    continent_user = CharField()
-    country_search = CharField()
-    country_user = CharField()
-    platform_search = CharField()
+    city_search = serializers.CharField()
+    city_user = serializers.CharField()
+    continent_search = serializers.CharField()
+    continent_user = serializers.CharField()
+    country_search = serializers.CharField()
+    country_user = serializers.CharField()
+    platform_search = serializers.CharField()
 
     def restore_object(self, attrs, instance=None):
         from pprint import pformat
