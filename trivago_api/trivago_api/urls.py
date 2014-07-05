@@ -1,14 +1,24 @@
-from django.conf.urls import patterns, url, include
-from rest_framework import routers
-from trivago_api import views
+# -*- encoding: utf-8 -*-
+# Standard library imports
+from __future__ import absolute_import
 
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+# Imports from core django
+from django.conf.urls import patterns, url, include
+
+# Imports from third party apps
+#from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
+
+# Local imports
+from . import views
+
+urlpatterns = format_suffix_patterns(patterns('trivago_api.views',
+    url(r'^$', 'api_root', name='api-root'),
+    url(r'^events/$', views.EventList.as_view(), name='events'),
+))
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.
-urlpatterns = patterns('',
-    url(r'^', include(router.urls)),
+urlpatterns += patterns('',
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )

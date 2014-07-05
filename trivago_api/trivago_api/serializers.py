@@ -1,15 +1,22 @@
-from django.contrib.auth.models import User, Group
+# -*- encoding: utf-8 -*-
+# Standard library imports
+from __future__ import absolute_import
+import logging
+
+# Imports from core django
+from django.forms import widgets
+from django.contrib.auth.models import User
+
+# Imports from third party apps
 from rest_framework import serializers
 
+# Local imports
+from trivago_api.models import Event
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+logger = logging.getLogger(__name__)
+
+
+class EventSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ('url', 'name')
-
+        model = Event
+        fields = ('url', 'titel', 'desc')

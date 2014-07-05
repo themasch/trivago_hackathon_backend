@@ -1,20 +1,40 @@
-from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
-from trivago_api.serializers import UserSerializer, GroupSerializer
+# -*- encoding: utf-8 -*-
+# Standard library imports
+from __future__ import absolute_import
+from pprint import pformat
+import logging
 
+# Imports from core django
 
-class UserViewSet(viewsets.ModelViewSet):
+# Imports from third party apps
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
+
+# Local imports
+from trivago_api.serializers import EventSerializer
+
+logger = logging.getLogger(__name__)
+
+@api_view(('GET',))
+def api_root(request, format=None):
     """
-    API endpoint that allows users to be viewed or edited.
+    Api Root, *markdown* should work _foo_
     """
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    public = {
+        'events': reverse('events', request=request, format=format),
+    }
+    links = public
+
+    return Response(links)
 
 
-class GroupViewSet(viewsets.ModelViewSet):
+class EventList(APIView):
     """
-    API endpoint that allows groups to be viewed or edited.
+    Event list
     """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
 
+    def get(self, request, format=None):
+        logger.info("serch for events %s" % pformat(request.QUERY_PARAMS))
+        return Response({"foobar": "baz"})
