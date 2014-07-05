@@ -54,12 +54,13 @@ class EventList(APIView):
         return params
 
     def get(self, request, format=None):
-        logger.info("got get")
-
         data = self.get_defaults()
         data.update(self.cleanup_params(request.QUERY_PARAMS))
         serializer = SearchSerializer(data=data)
         logger.info("search for events %s" % pformat(data))
+        query, begin, end = [data.get(k) for k in ("query", "begin", "end")]
+        events = []
         if serializer.is_valid():
             logger.info("heureka")
-        return Response({"foobar": "baz"})
+            events = event_api.eventful_events(query, begin, end)
+        return Response(events)
