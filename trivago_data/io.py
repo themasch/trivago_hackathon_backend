@@ -6,7 +6,6 @@ import os
 import sys
 import logging
 
-from joblib import Memory
 from pprint import pprint
 from csv import DictReader
 from datetime import datetime, date
@@ -14,7 +13,6 @@ from datetime import datetime, date
 from .config import paths
 
 logger = logging.getLogger(__name__)
-memory = Memory(cachedir=paths.cache)
 
 fieldnames=None
 
@@ -77,12 +75,14 @@ def _lines_from_csv():
             yield row
         query_file.close()
 
-@memory.cache
-def parse_hackathon():
+def parse_hackathon(limit=sys.maxint, debug=False):
     hp = HackathonParser()
     data = []
     for row_id, row in enumerate(_lines_from_csv()):
         row = hp.parse(row_id, row)
-        #pprint(row)
+        if debug:
+            pprint(row)
         data.append(row)
+        if row_id == limit:
+            break
     return data
