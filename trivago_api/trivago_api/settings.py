@@ -83,6 +83,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
+EVENTFUL_API_KEY = open("%s/../eventful_api_key" % SITE_ROOT).read().rstrip()
 
 LOGGING = {
     'version': 1,
