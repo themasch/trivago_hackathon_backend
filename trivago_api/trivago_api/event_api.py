@@ -4,6 +4,7 @@ from __future__ import absolute_import
 from pprint import pformat
 import logging
 from datetime import datetime, timedelta
+from urllib import urlencode
 
 # Imports from core django
 from django.conf import settings
@@ -13,6 +14,7 @@ import eventful
 
 # Local imports
 from .util import remap
+from .util import strip_accents
 
 logger = logging.getLogger(__name__)
 
@@ -40,20 +42,27 @@ EVENTFUL_MAPPING = {
 }
 
 def eventful_to_trivago(item):
-    logger.info("item: %s" % pformat(item))
+    logger.info("longitude: %s" % pformat(item["longitude"]))
+    logger.info("latitude: %s" % pformat(item["latitude"]))
     event = remap(item, EVENTFUL_MAPPING)
-    logger.info("image: %s" % pformat(item.get("image")))
     if item.get("image") is not None:
-        logger.info("item: %s" % pformat(item.get("image", {}).get("thumb", {}).get("url")))
         event["image_small"] = item.get("image", {}).get("thumb", {}).get("url")
         event["image"] = item.get("image", {}).get("medium", {}).get("url")
     return event
         
 def eventful_events(query, begin, end):
     events = []
-    result = eventful_api_client.call('/events/search', keywords=query)
-    eventful_events = result["events"]["event"]
-    for item in eventful_events:
-        events.append(eventful_to_trivago(item))
-        #events.append(item)
+    query = strip_accents(query)
+    logger.info("query to eventful api: %s" % query)
+    try:
+        result = eventful_api_client.call('/events/search', location=query)
+    except Exception, err:
+        logger.error("eventful api exception: %s" % pformat(err))
+    if result is not None:
+        event_dict = result.get("events", {})
+        if event_dict is not None:
+            eventful_events = event_dict.get("event", [])
+            for item in eventful_events:
+                events.append(eventful_to_trivago(item))
+                #events.append(item)
     return events
