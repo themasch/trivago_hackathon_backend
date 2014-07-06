@@ -6,6 +6,7 @@ import logging
 from datetime import datetime, timedelta
 
 # Imports from core django
+from django.views.decorators.cache import cache_page
 
 # Imports from third party apps
 from rest_framework import status
