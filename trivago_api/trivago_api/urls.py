@@ -15,6 +15,7 @@ from . import views
 urlpatterns = format_suffix_patterns(patterns('trivago_api.views',
     url(r'^$', 'api_root', name='api-root'),
     url(r'^events/search/$', views.ResultList.as_view(), name='search'),
+    url(r'^events/blockItem/$', views.BlockItem.as_view(), name='block-item'),
 ))
 
 # Wire up our API using automatic URL routing.
