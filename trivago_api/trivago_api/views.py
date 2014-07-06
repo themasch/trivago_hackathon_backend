@@ -17,7 +17,7 @@ from rest_framework.reverse import reverse
 # Local imports
 from .serializers import EventSerializer
 from .serializers import SearchSerializer
-from .serializers import EventIdSerializer
+from .serializers import ItemIdSerializer
 from .util import date_from_str
 from . import search_api
 
@@ -80,14 +80,14 @@ class ResultList(APIView):
             logger.info("serializer error: %s" % serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class BlockEvent(APIView):
+class BlockItem(APIView):
     """ Exclude Event with ID from listing
     """
     def post(self, request, format=None):
-        serializer = EventIdSerializer(data=request.DATA)
+        serializer = ItemIdSerializer(data=request.DATA)
         if serializer.is_valid():
             excluded_ids = request.session.get("excluded_ids", {})
-            excluded_ids[serializer.data["event_id"]] = True
+            excluded_ids[serializer.data["item_id"]] = True
             request.session["excluded_ids"] = excluded_ids
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:

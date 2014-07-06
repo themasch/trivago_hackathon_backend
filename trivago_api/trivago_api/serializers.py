@@ -52,13 +52,13 @@ class SearchSerializer(serializers.Serializer):
         return instance
 
 
-class EventIdSerializer(serializers.Serializer):
-    event_id = serializers.CharField()
+class ItemIdSerializer(serializers.Serializer):
+    item_id = serializers.CharField()
 
     def restore_object(self, attrs, instance=None):
         if instance is not None:
-            instance.event_id = attrs.get('event_id', instance.event_id)
+            instance.item_id = attrs.get('item_id', instance.item_id)
 
         instance = TrivagoData(attrs)
-        logger.info("event id serializer: %s" % pformat(instance))
+        logger.info("item id serializer: %s" % pformat(instance))
         return instance
