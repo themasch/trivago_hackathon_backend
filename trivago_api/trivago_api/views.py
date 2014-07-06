@@ -57,12 +57,16 @@ class ResultList(APIView):
                 params[name] = val
         return params
     
-    def filter_excluded(self, events, excluded_ids):
-        filtered_events = []
-        for event in events:
-            if event["id"] not in excluded_ids:
-                filtered_events.append(event)
-        return filtered_events
+    def filter_excluded(self, items, excluded_ids):
+        filtered_items = []
+        for item in items:
+            if item["id"] not in excluded_ids:
+                filtered_items.append(item)
+        return filtered_items
+
+    def sort_results(self, results):
+        results.sort(key=lambda item: item["begin"])
+        return results
 
     def get(self, request, format=None):
         data = self.get_defaults()
