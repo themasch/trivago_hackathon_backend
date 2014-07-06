@@ -19,7 +19,7 @@ from .serializers import EventSerializer
 from .serializers import SearchSerializer
 from .serializers import EventIdSerializer
 from .util import date_from_str
-from . import event_api
+from . import search_api
 
 logger = logging.getLogger(__name__)
 
@@ -72,10 +72,10 @@ class ResultList(APIView):
         logger.info("search for events %s %s %s %s" % (query, location, begin, end))
         events = []
         if serializer.is_valid():
-            events = event_api.eventful_events(query, location, begin, end)
+            results = search_api.get_results(query, location, begin, end)
             excluded_ids = request.session.get("excluded_ids", {})
-            events = self.filter_excluded(events, excluded_ids)
-            return Response(events)
+            results = self.filter_excluded(results, excluded_ids)
+            return Response(results)
         else:
             logger.info("serializer error: %s" % serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

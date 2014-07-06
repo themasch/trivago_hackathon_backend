@@ -16,7 +16,7 @@ def date_from_str(date_str):
 
 def remap(raw_data, mapping):
     data = {}
-    for k, (transform, v) in mapping.iteritems():
+    for k, (transform, v) in mapping:
         if transform is not None:
             val = raw_data.get(k)
             if val is not None:
