@@ -31,7 +31,7 @@ def api_root(request, format=None):
     """
     public = {
         'search': reverse('search', request=request, format=format),
-        'blockEvent': reverse('block-event', request=request, format=format),
+        'blockItem': reverse('block-item', request=request, format=format),
     }
     links = public
     return Response(links)
