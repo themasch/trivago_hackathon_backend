@@ -42,6 +42,7 @@ class HackathonParser(object):
     def parse(self, row_id, row):
         row = self.parse_dates(row)
         row = self.parse_floats(row)
+        row["group_search"] = row["group_search"] == "1"
         row["id"] = row_id
         return row
 
