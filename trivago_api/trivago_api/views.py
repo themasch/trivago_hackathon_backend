@@ -29,14 +29,14 @@ def api_root(request, format=None):
     Api Root, *markdown* should work _foo_
     """
     public = {
-        'events': reverse('events', request=request, format=format),
+        'search': reverse('search', request=request, format=format),
         'blockEvent': reverse('block-event', request=request, format=format),
     }
     links = public
     return Response(links)
 
 
-class EventList(APIView):
+class ResultList(APIView):
     """ Search for events -> list of events
     """
     def get_defaults(self):
