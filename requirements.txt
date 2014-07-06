@@ -2,6 +2,7 @@ Django==1.6.5
 PyYAML==3.11
 django-cors-headers==0.12
 djangorestframework==2.3.14
+eventbrite==0.45
 eventful==0.3
 httplib2==0.9
 joblib==0.8.2
