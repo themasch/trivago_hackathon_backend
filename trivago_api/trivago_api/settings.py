@@ -86,6 +86,9 @@ STATIC_URL = '/static/'
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 EVENTFUL_API_KEY = open("%s/../eventful_api_key" % SITE_ROOT).read().rstrip()
+EVENTBRITE_API_KEY = open("%s/../eventbrite_api_key" % SITE_ROOT).read().rstrip()
+EVENTBRITE_USER_KEY = open("%s/../eventbrite_user_key" % SITE_ROOT).read().rstrip()
+EVENTBRITE_OAUTH_TOKEN = open("%s/../eventbrite_oauth_token" % SITE_ROOT).read().rstrip()
 
 LOGGING = {
     'version': 1,

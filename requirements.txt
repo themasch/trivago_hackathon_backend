@@ -6,6 +6,8 @@ eventbrite==0.45
 eventful==0.3
 httplib2==0.9
 joblib==0.8.2
+python-dateutil==2.2
 requests==2.3.0
 simplejson==3.5.3
+six==1.7.3
 wsgiref==0.1.2
