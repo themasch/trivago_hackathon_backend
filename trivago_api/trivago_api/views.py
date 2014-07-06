@@ -65,7 +65,7 @@ class ResultList(APIView):
         return filtered_items
 
     def sort_results(self, results):
-        results.sort(key=lambda item: item["begin"])
+        results.sort(key=lambda item: item["begin"].strftime("%Y%m%d%H%M%S"))
         return results
 
     def get(self, request, format=None):
@@ -80,6 +80,7 @@ class ResultList(APIView):
             results = search_api.get_results(query, location, begin, end)
             excluded_ids = request.session.get("excluded_ids", {})
             results = self.filter_excluded(results, excluded_ids)
+            results = self.sort_results(results)
             return Response(results)
         else:
             logger.info("serializer error: %s" % serializer.errors)

@@ -20,7 +20,9 @@ from .util import remap
 logger = logging.getLogger(__name__)
 
 def date_from_eventbrite(item):
-    return parse_date(item["utc"])
+    date_obj = parse_date(item["utc"])
+    date_obj.replace(tzinfo=None)
+    return date_obj
     
 def get_text(item):
     return item["text"]
